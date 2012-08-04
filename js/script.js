@@ -1,3 +1,7 @@
+/*! 2D Rope Experiment - v0.1.0 - 2012-08-04
+* http://PROJECT_WEBSITE/
+* Copyright (c) 2012 Mustapha Ben Chaaben; Licensed MIT */
+
 /*!
  * jQuery JavaScript Library v1.7.2
  * http://jquery.com/
@@ -9402,11 +9406,6 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 
 
 })( window );
-
-/*********************************************** 
-     Begin vect2.js 
-***********************************************/ 
-
 // 2D Vector representation
 var vect2 = {
 	x: 0,
@@ -9464,11 +9463,6 @@ var vect2 = {
 	// Debuging method
 	logCoordinates : function() { console.log("x: " + this.x + " y: " + this.y); }
 };
-
-/*********************************************** 
-     Begin point.js 
-***********************************************/ 
-
 // A punctual mass
 var point = {
 	// A 2D vect representing the point's position in the canvas coordinates system
@@ -9522,11 +9516,6 @@ var point = {
 		return this;
 	},
 };
-
-/*********************************************** 
-     Begin spring.js 
-***********************************************/ 
-
 var SPRING_CONSTANT = 0.3;
 var FRICTION_CONSTANT = 0.14;
 
@@ -9569,11 +9558,6 @@ var spring = {
 		return this;
 	}
 };
-
-/*********************************************** 
-     Begin engine.js 
-***********************************************/ 
-
 var timer = (function() {
 	var SLOW_MOTION_RATIO = 1;
 	var MAX_POSSIBLE_DT = 0.002;	    // This Is Needed To Prevent Passing Over A Non-Precise dt Value
@@ -9689,97 +9673,6 @@ var engine = (function() {
 		}
 	}
 })();
-
-/*********************************************** 
-     Begin rendrer.js 
-***********************************************/ 
-
-// This Module is responsible for HTML5 canvas rendering
-var rendrer = (function() {
-	
-	return {
-		canvas: 0,
-		context: 0,
-		// Draws a rope from the supplied points coordinates on the context provided
-		drawLineWithPoints: function (points) {
-			// Clear what's been drawn before this
-			this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			
-			// Begin the path
-			this.context.beginPath();
-			// Move to the first point of the line
-			this.context.moveTo(points[0].position.x, points[0].position.y);
-			
-			// Start setting the path by iterating on each point of the line and setting it
-			for(var i=1; i < points.length; i++) {
-				this.context.lineTo(points[i].position.x, points[i].position.y);
-			}
-		
-			// Line Width
-			this.context.lineWidth = 1;
-			// Line Color
-			this.context.strokeStyle = '#000000';
-			
-			// Draw
-			this.context.stroke();
-		}
-	}
-})();
-
-// set requestAnimFrame function in all possible browser cases (fall back to setTimeout)
-window.requestAnimFrame = (function(callback){
-	return window.requestAnimationFrame ||
-	window.webkitRequestAnimationFrame ||
-	window.mozRequestAnimationFrame ||
-	window.oRequestAnimationFrame ||
-	window.msRequestAnimationFrame ||
-	function(callback){
-		window.setTimeout(callback, 1000 / 60);
-	};
-})();
-
-/*********************************************** 
-     Begin main.js 
-***********************************************/ 
-
-var NUMBER_OF_POINTS = 200;
-
-$(document).ready(function () {
-	// Set the rendrer for the canvas
-	rendrer.canvas = document.getElementById("RopeCanvas");
-	
-	// Make sure we don't execute when canvas isn't supported
-	if (rendrer.canvas.getContext)
-	{	
-		// Use getContext to use the canvas for drawing
-		rendrer.context = rendrer.canvas.getContext('2d');	
-		
-		
-		// Initialize the points in the engine object
-		engine.initiateLineWithPoints(NUMBER_OF_POINTS);
-		
-		// Get initial drwaing on screen
-		rendrer.drawLineWithPoints(engine.getPoints());
-		
-		// Set the jQuery refrence to canvas to the interactionEngine
-		interactionEngine.setCanvas( $(rendrer.canvas) );
-		// Start watching for user interactions
-		interactionEngine.startInteractions();
-
-	    // Start animation
-		engine.startAnimating();
-	}
-	else
-	{
-		alert('You need a browser that supports canvas');
-	}
-
-});
-
-/*********************************************** 
-     Begin interaction.js 
-***********************************************/ 
-
 var interactionEngine = (function() {
 	// Constant tolerance range for user clicks (relative to point)
 	var TOLERANCE_RANGE = Object.create(vect2).initWithCoordinates(10, 20);
@@ -9853,3 +9746,79 @@ var interactionEngine = (function() {
 		}
 	};
 })();
+// This Module is responsible for HTML5 canvas rendering
+var rendrer = (function() {
+	
+	return {
+		canvas: 0,
+		context: 0,
+		// Draws a rope from the supplied points coordinates on the context provided
+		drawLineWithPoints: function (points) {
+			// Clear what's been drawn before this
+			this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			
+			// Begin the path
+			this.context.beginPath();
+			// Move to the first point of the line
+			this.context.moveTo(points[0].position.x, points[0].position.y);
+			
+			// Start setting the path by iterating on each point of the line and setting it
+			for(var i=1; i < points.length; i++) {
+				this.context.lineTo(points[i].position.x, points[i].position.y);
+			}
+		
+			// Line Width
+			this.context.lineWidth = 1;
+			// Line Color
+			this.context.strokeStyle = '#000000';
+			
+			// Draw
+			this.context.stroke();
+		}
+	}
+})();
+
+// set requestAnimFrame function in all possible browser cases (fall back to setTimeout)
+window.requestAnimFrame = (function(callback){
+	return window.requestAnimationFrame ||
+	window.webkitRequestAnimationFrame ||
+	window.mozRequestAnimationFrame ||
+	window.oRequestAnimationFrame ||
+	window.msRequestAnimationFrame ||
+	function(callback){
+		window.setTimeout(callback, 1000 / 60);
+	};
+})();
+var NUMBER_OF_POINTS = 200;
+
+$(document).ready(function () {
+	// Set the rendrer for the canvas
+	rendrer.canvas = document.getElementById("RopeCanvas");
+	
+	// Make sure we don't execute when canvas isn't supported
+	if (rendrer.canvas.getContext)
+	{	
+		// Use getContext to use the canvas for drawing
+		rendrer.context = rendrer.canvas.getContext('2d');	
+		
+		
+		// Initialize the points in the engine object
+		engine.initiateLineWithPoints(NUMBER_OF_POINTS);
+		
+		// Get initial drwaing on screen
+		rendrer.drawLineWithPoints(engine.getPoints());
+		
+		// Set the jQuery refrence to canvas to the interactionEngine
+		interactionEngine.setCanvas( $(rendrer.canvas) );
+		// Start watching for user interactions
+		interactionEngine.startInteractions();
+
+	    // Start animation
+		engine.startAnimating();
+	}
+	else
+	{
+		alert('You need a browser that supports canvas');
+	}
+
+});
