@@ -23,8 +23,7 @@ $(document).ready(function () {
 		interactionEngine.startInteractions();
 
 	    // Start animation
-		engine.animate();
-		engine.animating = 1;
+		engine.startAnimating();
 	}
 	else
 	{

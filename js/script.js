@@ -9528,7 +9528,7 @@ var point = {
 ***********************************************/ 
 
 var SPRING_CONSTANT = 0.3;
-var FRICTION_CONSTANT = 0.2;
+var FRICTION_CONSTANT = 0.14;
 
 // A spring is a connection beween to punctual masses
 var spring = {
@@ -9575,12 +9575,16 @@ var spring = {
 ***********************************************/ 
 
 var timer = (function() {
-	var SLOW_MOTION_RATIO = 0.5;
+	var SLOW_MOTION_RATIO = 1;
 	var MAX_POSSIBLE_DT = 0.002;	    // This Is Needed To Prevent Passing Over A Non-Precise dt Value
 	
 	var timer = new Date().getTime();
 	
 	return {
+		init: function() {
+			timer = new Date().getTime();
+		},
+		// Returns the time passed between 2 calls of this method (in seconds)
 		getNewDt: function() {
 			// dt between frames
 			var dt = new Date().getTime() - timer;
@@ -9588,15 +9592,13 @@ var timer = (function() {
 			// Update timer
 			timer = new Date().getTime();
 			
-			var dts, numOfIterations;
 			// Slow motion if you want
 			dt /= SLOW_MOTION_RATIO;
 			
-			// dt in seconds
-		  	dts = dt / 1000;
-		  	
-		  	return dts;
+			// return dt in seconds
+		  	return dt / 1000;
 		},
+		// Returns the number of required infinit tesimal steps to catch up with the timer
 	  	getNumberOfIterations: function(dts) {
 		  	// Iteration needed to catch up with the MAX_POSSIBLE_DT
 			return parseInt(dts / MAX_POSSIBLE_DT) + 1;
@@ -9679,6 +9681,11 @@ var engine = (function() {
 			requestAnimFrame(function(){
 				parentContext.animate();
 			});
+		},
+		startAnimating: function() {
+			timer.init();
+			this.animate();
+			this.animating = 1;
 		}
 	}
 })();
@@ -9760,8 +9767,7 @@ $(document).ready(function () {
 		interactionEngine.startInteractions();
 
 	    // Start animation
-		engine.animate();
-		engine.animating = 1;
+		engine.startAnimating();
 	}
 	else
 	{
