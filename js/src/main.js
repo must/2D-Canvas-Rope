@@ -8,8 +8,9 @@ $(document).ready(function () {
 	if (rendrer.canvas.getContext)
 	{	
 		// Use getContext to use the canvas for drawing
-		rendrer.context = rendrer.canvas.getContext('2d');	
+		rendrer.context = rendrer.canvas.getContext('2d');
 		
+		rendrer.init();
 		
 		// Initialize the points in the engine object
 		engine.initiateLineWithPoints(NUMBER_OF_POINTS);

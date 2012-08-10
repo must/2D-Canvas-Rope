@@ -1,5 +1,5 @@
 var timer = (function() {
-	var SLOW_MOTION_RATIO = 1;
+	var SLOW_MOTION_RATIO = 1.3;
 	var MAX_POSSIBLE_DT = 0.002;	    // This Is Needed To Prevent Passing Over A Non-Precise dt Value
 	
 	var timer = new Date().getTime();
@@ -35,18 +35,26 @@ var engine = (function() {
 	var DEFAULT_NUMBER_OF_POINTS = 40;	
 	var MASS = .001; // Mass in Kg of a point of the Rope assuming the whole mass is 1kg
 	
-	var GRAVITATIONAL_PULL = 100;
+	var GRAVITATIONAL_PULL = 200;
 	
 	// Points array
 	var points = [];
+	var springs = [];
+	
+	function _initSprings(points) {
+		for(var i=1; i < points.length; i++)
+		{										  
+			springs[i] = Object.create(spring);
+			springs[i].initWithPoints(points[i-1], points[i]);
+		}
+	}
 	
 	function _updateCoordinates(points, dt) {
 		for(var i=1; i < points.length; i++)
 		{					
 			points[i].removeForces();					  
 		
-			var spring_connection = Object.create(spring);
-			spring_connection.initWithPoints(points[i-1], points[i]).applyForces();
+			springs[i].applyForces();
 		
 			points[i].addForceFromVect(Object.create(vect2).initWithCoordinates(0, GRAVITATIONAL_PULL).multiplyByScalar(MASS));
 		
@@ -67,7 +75,9 @@ var engine = (function() {
 		
 				points.push(newPoint);
 			}
-		
+			
+			_initSprings(points);
+			
 			return points;
 		},
 		getPoints: function() {

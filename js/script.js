@@ -1,4 +1,4 @@
-/*! 2D Rope Experiment - v0.1.0 - 2012-08-04
+/*! 2D Rope Experiment - v0.1.0 - 2012-08-10
 * http://PROJECT_WEBSITE/
 * Copyright (c) 2012 Mustapha Ben Chaaben; Licensed MIT */
 
@@ -9516,7 +9516,7 @@ var point = {
 		return this;
 	},
 };
-var SPRING_CONSTANT = 0.3;
+var SPRING_CONSTANT = 0.4;
 var FRICTION_CONSTANT = 0.14;
 
 // A spring is a connection beween to punctual masses
@@ -9531,8 +9531,6 @@ var spring = {
 		return this;
 	},
 	_calculate: function() {
-		this.force = Object.create(vect2).initWithCoordinates(0, 0);
-
 		// V[i-1] - V[i] = + V[i] * (-1) + V[i-1]
 		var springVector = Object.create(vect2).initWithVect(this.point2.position).multiplyByScalar(-1).sumWithVect(this.point1.position);
 		var r = springVector.length();
@@ -9559,7 +9557,7 @@ var spring = {
 	}
 };
 var timer = (function() {
-	var SLOW_MOTION_RATIO = 1;
+	var SLOW_MOTION_RATIO = 1.3;
 	var MAX_POSSIBLE_DT = 0.002;	    // This Is Needed To Prevent Passing Over A Non-Precise dt Value
 	
 	var timer = new Date().getTime();
@@ -9595,18 +9593,26 @@ var engine = (function() {
 	var DEFAULT_NUMBER_OF_POINTS = 40;	
 	var MASS = .001; // Mass in Kg of a point of the Rope assuming the whole mass is 1kg
 	
-	var GRAVITATIONAL_PULL = 100;
+	var GRAVITATIONAL_PULL = 200;
 	
 	// Points array
 	var points = [];
+	var springs = [];
+	
+	function _initSprings(points) {
+		for(var i=1; i < points.length; i++)
+		{										  
+			springs[i] = Object.create(spring);
+			springs[i].initWithPoints(points[i-1], points[i]);
+		}
+	}
 	
 	function _updateCoordinates(points, dt) {
 		for(var i=1; i < points.length; i++)
 		{					
 			points[i].removeForces();					  
 		
-			var spring_connection = Object.create(spring);
-			spring_connection.initWithPoints(points[i-1], points[i]).applyForces();
+			springs[i].applyForces();
 		
 			points[i].addForceFromVect(Object.create(vect2).initWithCoordinates(0, GRAVITATIONAL_PULL).multiplyByScalar(MASS));
 		
@@ -9627,7 +9633,9 @@ var engine = (function() {
 		
 				points.push(newPoint);
 			}
-		
+			
+			_initSprings(points);
+			
 			return points;
 		},
 		getPoints: function() {
@@ -9748,10 +9756,13 @@ var interactionEngine = (function() {
 })();
 // This Module is responsible for HTML5 canvas rendering
 var rendrer = (function() {
-	
 	return {
 		canvas: 0,
 		context: 0,
+
+		init: function() {
+
+		},
 		// Draws a rope from the supplied points coordinates on the context provided
 		drawLineWithPoints: function (points) {
 			// Clear what's been drawn before this
@@ -9768,9 +9779,9 @@ var rendrer = (function() {
 			}
 		
 			// Line Width
-			this.context.lineWidth = 1;
+			this.context.lineWidth = 12;
 			// Line Color
-			this.context.strokeStyle = '#000000';
+			this.context.strokeStyle = 'yellow';
 			
 			// Draw
 			this.context.stroke();
@@ -9799,8 +9810,9 @@ $(document).ready(function () {
 	if (rendrer.canvas.getContext)
 	{	
 		// Use getContext to use the canvas for drawing
-		rendrer.context = rendrer.canvas.getContext('2d');	
+		rendrer.context = rendrer.canvas.getContext('2d');
 		
+		rendrer.init();
 		
 		// Initialize the points in the engine object
 		engine.initiateLineWithPoints(NUMBER_OF_POINTS);

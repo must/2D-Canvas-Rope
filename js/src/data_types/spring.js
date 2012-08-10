@@ -1,4 +1,4 @@
-var SPRING_CONSTANT = 0.3;
+var SPRING_CONSTANT = 0.4;
 var FRICTION_CONSTANT = 0.14;
 
 // A spring is a connection beween to punctual masses
@@ -13,8 +13,6 @@ var spring = {
 		return this;
 	},
 	_calculate: function() {
-		this.force = Object.create(vect2).initWithCoordinates(0, 0);
-
 		// V[i-1] - V[i] = + V[i] * (-1) + V[i-1]
 		var springVector = Object.create(vect2).initWithVect(this.point2.position).multiplyByScalar(-1).sumWithVect(this.point1.position);
 		var r = springVector.length();

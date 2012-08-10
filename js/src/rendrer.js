@@ -1,9 +1,12 @@
 // This Module is responsible for HTML5 canvas rendering
 var rendrer = (function() {
-	
 	return {
 		canvas: 0,
 		context: 0,
+
+		init: function() {
+
+		},
 		// Draws a rope from the supplied points coordinates on the context provided
 		drawLineWithPoints: function (points) {
 			// Clear what's been drawn before this
@@ -20,9 +23,9 @@ var rendrer = (function() {
 			}
 		
 			// Line Width
-			this.context.lineWidth = 1;
+			this.context.lineWidth = 12;
 			// Line Color
-			this.context.strokeStyle = '#000000';
+			this.context.strokeStyle = 'yellow';
 			
 			// Draw
 			this.context.stroke();
