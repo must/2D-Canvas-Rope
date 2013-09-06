@@ -35,7 +35,7 @@ var engine = (function() {
 	var DEFAULT_NUMBER_OF_POINTS = 40;	
 	var MASS = .001; // Mass in Kg of a point of the Rope assuming the whole mass is 1kg
 	
-	var GRAVITATIONAL_PULL = 200;
+	var GRAVITATIONAL_PULL = 300;
 	
 	// Points array
 	var points = [];

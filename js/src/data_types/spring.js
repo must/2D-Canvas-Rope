@@ -1,5 +1,5 @@
-var SPRING_CONSTANT = 0.4;
-var FRICTION_CONSTANT = 0.14;
+var SPRING_CONSTANT = 0.6;
+var FRICTION_CONSTANT = 0.2;
 
 // A spring is a connection beween to punctual masses
 var spring = {

@@ -1,4 +1,4 @@
-/*! 2D Rope Experiment - v0.1.0 - 2012-08-10
+/*! 2D Rope Experiment - v0.1.0 - 2012-09-06
 * http://PROJECT_WEBSITE/
 * Copyright (c) 2012 Mustapha Ben Chaaben; Licensed MIT */
 
@@ -9516,8 +9516,8 @@ var point = {
 		return this;
 	},
 };
-var SPRING_CONSTANT = 0.4;
-var FRICTION_CONSTANT = 0.14;
+var SPRING_CONSTANT = 0.6;
+var FRICTION_CONSTANT = 0.2;
 
 // A spring is a connection beween to punctual masses
 var spring = {
@@ -9593,7 +9593,7 @@ var engine = (function() {
 	var DEFAULT_NUMBER_OF_POINTS = 40;	
 	var MASS = .001; // Mass in Kg of a point of the Rope assuming the whole mass is 1kg
 	
-	var GRAVITATIONAL_PULL = 200;
+	var GRAVITATIONAL_PULL = 300;
 	
 	// Points array
 	var points = [];
@@ -9779,9 +9779,9 @@ var rendrer = (function() {
 			}
 		
 			// Line Width
-			this.context.lineWidth = 12;
+			this.context.lineWidth = 10;
 			// Line Color
-			this.context.strokeStyle = 'yellow';
+			this.context.strokeStyle = 'black';
 			
 			// Draw
 			this.context.stroke();
