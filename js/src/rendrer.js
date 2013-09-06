@@ -23,9 +23,9 @@ var rendrer = (function() {
 			}
 		
 			// Line Width
-			this.context.lineWidth = 12;
+			this.context.lineWidth = 10;
 			// Line Color
-			this.context.strokeStyle = 'yellow';
+			this.context.strokeStyle = 'black';
 			
 			// Draw
 			this.context.stroke();

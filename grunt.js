@@ -11,6 +11,17 @@ module.exports = function(grunt) {
         '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
         'Mustapha Ben Chaaben; Licensed MIT */'
     },
+    watch: {
+      scripts: {
+        files: [
+            'grunt.js',
+            'js/*.js',
+            'js/src/data_types/*.js',
+            'js/src/*.js'
+        ],
+        tasks: 'concat min'
+      }
+    },
     concat: {
       dist: {
         src: ['<banner:meta.banner>',
